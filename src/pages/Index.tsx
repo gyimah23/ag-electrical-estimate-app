@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { format } from "date-fns";
 import { nanoid } from "nanoid";
@@ -7,7 +6,7 @@ import MaterialForm from "@/components/MaterialForm";
 import MaterialsTable from "@/components/MaterialsTable";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { FilePdf } from "lucide-react";
+import { FileText } from "lucide-react";
 import { generatePDF } from "@/utils/pdfUtils";
 import { useToast } from "@/components/ui/use-toast";
 import ShareOptions from "@/components/ShareOptions";
@@ -109,7 +108,7 @@ const Index = () => {
                   onClick={handleExportPDF}
                   className="bg-orange-600 hover:bg-orange-700"
                 >
-                  <FilePdf className="mr-2 h-4 w-4" /> Export to PDF
+                  <FileText className="mr-2 h-4 w-4" /> Export to PDF
                 </Button>
                 <ShareOptions
                   estimateData={estimateData}

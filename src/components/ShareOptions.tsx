@@ -10,7 +10,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { EstimateData } from "@/types";
 import { toast } from "@/components/ui/use-toast";
-import { WhatsApp, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
+// Fixed import for WhatsApp icon
+import { MessageSquare } from "lucide-react";
 
 interface ShareOptionsProps {
   estimateData: EstimateData;
@@ -121,7 +123,7 @@ const ShareOptions: React.FC<ShareOptionsProps> = ({
               onClick={shareViaWhatsApp}
               className="bg-green-600 hover:bg-green-700"
             >
-              <WhatsApp className="mr-2 h-4 w-4" /> WhatsApp
+              <MessageSquare className="mr-2 h-4 w-4" /> WhatsApp
             </Button>
             <Button
               onClick={shareViaEmail}
