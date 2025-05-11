@@ -2,7 +2,6 @@
 import { EstimateData, MaterialItem } from "@/types";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
-import { useToast } from "@/components/ui/use-toast";
 
 // Need to add the type definition for jspdf-autotable
 declare module "jspdf" {
@@ -48,10 +47,13 @@ export const generatePDF = (estimateData: EstimateData): void => {
     // Right side information
     doc.text(`Estimate #: ${estimateData.estimateNumber}`, 150, 45);
     doc.text(`Date: ${estimateData.date}`, 150, 52);
+    doc.text(`Currency: ${estimateData.currency || '$'}`, 150, 59);
 
     // Add items table
     const tableColumn = ["Material", "Brand/Standard", "Quantity", "Unit Price", "Total"];
     const tableRows: any[][] = [];
+
+    const currencySymbol = estimateData.currency || '$';
 
     estimateData.items.forEach((item: MaterialItem) => {
       const total = item.quantity * item.price;
@@ -59,15 +61,15 @@ export const generatePDF = (estimateData: EstimateData): void => {
         item.name,
         item.brand || "N/A",
         `${item.quantity} ${item.unit}`,
-        `$${item.price.toFixed(2)}`,
-        `$${total.toFixed(2)}`,
+        `${currencySymbol}${item.price.toFixed(2)}`,
+        `${currencySymbol}${total.toFixed(2)}`,
       ]);
     });
 
     doc.autoTable({
       head: [tableColumn],
       body: tableRows,
-      startY: 60,
+      startY: 67,
       theme: "grid",
       styles: { fontSize: 9 },
       headStyles: { fillColor: [16, 145, 234], textColor: [255, 255, 255] },
@@ -80,7 +82,7 @@ export const generatePDF = (estimateData: EstimateData): void => {
     doc.text("Total Amount:", 140, finalY + 10);
     doc.setFontSize(12);
     doc.setFont("helvetica", "bold");
-    doc.text(`$${totalAmount.toFixed(2)}`, 175, finalY + 10);
+    doc.text(`${currencySymbol}${totalAmount.toFixed(2)}`, 175, finalY + 10);
 
     // Add footer
     doc.setFontSize(9);
@@ -103,18 +105,10 @@ export const generatePDF = (estimateData: EstimateData): void => {
     // Save PDF
     doc.save(`Electrical_Estimate_${estimateData.estimateNumber}.pdf`);
     
-    const { toast } = useToast();
-    toast({
-      title: "Success",
-      description: "PDF generated successfully!",
-    });
+    console.log("PDF generated successfully");
+    // We'll handle the toast in the component that calls this function
   } catch (error) {
     console.error("Error generating PDF:", error);
-    const { toast } = useToast();
-    toast({
-      title: "Error",
-      description: "Failed to generate PDF. Please try again.",
-      variant: "destructive",
-    });
+    throw error; // Let the component handle the error
   }
 };

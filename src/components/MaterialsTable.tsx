@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { MaterialItem } from "@/types";
+import { MaterialItem, CurrencyType } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { motion } from "framer-motion";
@@ -9,17 +9,18 @@ import { motion } from "framer-motion";
 interface MaterialsTableProps {
   materials: MaterialItem[];
   onRemoveMaterial: (id: string) => void;
+  currency?: CurrencyType;
 }
 
-const MaterialsTable: React.FC<MaterialsTableProps> = ({ materials, onRemoveMaterial }) => {
+const MaterialsTable: React.FC<MaterialsTableProps> = ({ materials, onRemoveMaterial, currency = "$" }) => {
   if (materials.length === 0) {
     return (
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="text-center p-8 border rounded-lg bg-gray-50"
+        className="text-center p-8 border rounded-lg bg-slate-50 shadow-sm"
       >
-        <p className="text-gray-500">No materials added yet. Add materials using the form above.</p>
+        <p className="text-slate-500">No materials added yet. Add materials using the form above.</p>
       </motion.div>
     );
   }
@@ -43,7 +44,7 @@ const MaterialsTable: React.FC<MaterialsTableProps> = ({ materials, onRemoveMate
     >
       <Table>
         <TableHeader>
-          <TableRow className="bg-electric-50">
+          <TableRow className="bg-slate-100">
             <TableHead>Material</TableHead>
             <TableHead>Brand/Standard</TableHead>
             <TableHead className="text-right">Quantity</TableHead>
@@ -69,8 +70,8 @@ const MaterialsTable: React.FC<MaterialsTableProps> = ({ materials, onRemoveMate
                 <TableCell className="font-medium">{material.name}</TableCell>
                 <TableCell>{material.brand || "N/A"}</TableCell>
                 <TableCell className="text-right">{material.quantity} {material.unit}</TableCell>
-                <TableCell className="text-right">${material.price.toFixed(2)}</TableCell>
-                <TableCell className="text-right">${total.toFixed(2)}</TableCell>
+                <TableCell className="text-right">{currency}{material.price.toFixed(2)}</TableCell>
+                <TableCell className="text-right">{currency}{total.toFixed(2)}</TableCell>
                 <TableCell>
                   <Button
                     variant="ghost"
@@ -84,12 +85,12 @@ const MaterialsTable: React.FC<MaterialsTableProps> = ({ materials, onRemoveMate
               </motion.tr>
             );
           })}
-          <TableRow className="bg-electric-50 font-semibold">
+          <TableRow className="bg-slate-100 font-semibold">
             <TableCell colSpan={4} className="text-right">
               Total Amount:
             </TableCell>
-            <TableCell className="text-right font-bold text-electric-700">
-              ${materials.reduce((total, item) => total + item.quantity * item.price, 0).toFixed(2)}
+            <TableCell className="text-right font-bold text-blue-700">
+              {currency}{materials.reduce((total, item) => total + item.quantity * item.price, 0).toFixed(2)}
             </TableCell>
             <TableCell></TableCell>
           </TableRow>

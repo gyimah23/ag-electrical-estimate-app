@@ -15,6 +15,9 @@ export interface EstimateData {
   items: MaterialItem[];
   date: string;
   estimateNumber: string;
+  currency: string;
 }
 
 export type CableStandard = "Nexans" | "RR" | "Reroy" | "CABSTAR" | "TROPICAL CABLES" | "Other";
+
+export type CurrencyType = "$" | "€" | "£" | "¥" | "₹" | "₣";
