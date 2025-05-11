@@ -1,4 +1,5 @@
 
+
 export interface MaterialItem {
   id: string;
   name: string;
@@ -20,4 +21,5 @@ export interface EstimateData {
 
 export type CableStandard = "Nexans" | "RR" | "Reroy" | "CABSTAR" | "TROPICAL CABLES" | "Other";
 
-export type CurrencyType = "$" | "€" | "£" | "¥" | "₹" | "₣";
+export type CurrencyType = "$" | "€" | "£" | "¥" | "₹" | "₣" | "₵";
+

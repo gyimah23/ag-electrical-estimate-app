@@ -20,6 +20,26 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+// Custom Ghanaian Cedi Icon Component
+const CediIcon = ({ className }: { className?: string }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round"
+    className={className || "h-4 w-4"}
+  >
+    <circle cx="12" cy="12" r="10" />
+    <path d="M8 12h8" />
+    <path d="M8 7h6" />
+    <path d="M8 17h6" />
+    <path d="M14 7v10" />
+  </svg>
+);
+
 const Index = () => {
   const { toast } = useToast();
   const [materials, setMaterials] = useState<MaterialItem[]>([]);
@@ -106,6 +126,7 @@ const Index = () => {
       case "¥": return <JapaneseYen className="h-4 w-4" />;
       case "₹": return <IndianRupee className="h-4 w-4" />;
       case "₣": return <SwissFranc className="h-4 w-4" />;
+      case "₵": return <CediIcon className="h-4 w-4" />;
       default: return <DollarSign className="h-4 w-4" />;
     }
   };
@@ -196,6 +217,9 @@ const Index = () => {
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => handleCurrencyChange("₣")}>
                           <SwissFranc className="mr-2 h-4 w-4" /> CHF (₣)
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleCurrencyChange("₵")}>
+                          <CediIcon className="mr-2 h-4 w-4" /> GHS (₵)
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
