@@ -5,6 +5,8 @@ export interface MaterialItem {
   quantity: number;
   unit: string;
   price: number;
+  brand?: string;
+  isCable: boolean;
 }
 
 export interface EstimateData {
@@ -14,3 +16,5 @@ export interface EstimateData {
   date: string;
   estimateNumber: string;
 }
+
+export type CableStandard = "Nexans" | "RR" | "Reroy" | "CABSTAR" | "TROPICAL CABLES" | "Other";

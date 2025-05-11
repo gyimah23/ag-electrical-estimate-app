@@ -2,12 +2,15 @@
 import { EstimateData, MaterialItem } from "@/types";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
-import { toast } from "@/components/ui/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 
 // Need to add the type definition for jspdf-autotable
 declare module "jspdf" {
   interface jsPDF {
     autoTable: (options: any) => jsPDF;
+    lastAutoTable: {
+      finalY: number;
+    };
   }
 }
 
@@ -47,13 +50,14 @@ export const generatePDF = (estimateData: EstimateData): void => {
     doc.text(`Date: ${estimateData.date}`, 150, 52);
 
     // Add items table
-    const tableColumn = ["Material", "Quantity", "Unit Price", "Total"];
+    const tableColumn = ["Material", "Brand/Standard", "Quantity", "Unit Price", "Total"];
     const tableRows: any[][] = [];
 
     estimateData.items.forEach((item: MaterialItem) => {
       const total = item.quantity * item.price;
       tableRows.push([
         item.name,
+        item.brand || "N/A",
         `${item.quantity} ${item.unit}`,
         `$${item.price.toFixed(2)}`,
         `$${total.toFixed(2)}`,
@@ -71,7 +75,7 @@ export const generatePDF = (estimateData: EstimateData): void => {
     });
 
     // Add total
-    const finalY = (doc as any).lastAutoTable.finalY || 60;
+    const finalY = doc.lastAutoTable.finalY || 60;
     doc.setFontSize(11);
     doc.text("Total Amount:", 140, finalY + 10);
     doc.setFontSize(12);
@@ -89,15 +93,24 @@ export const generatePDF = (estimateData: EstimateData): void => {
       align: "center",
     });
 
+    // Add estimate ID at the bottom
+    doc.setFont("helvetica", "italic");
+    doc.setFontSize(8);
+    doc.text(`Estimate ID: ${estimateData.estimateNumber}`, 105, finalY + 40, {
+      align: "center",
+    });
+
     // Save PDF
     doc.save(`Electrical_Estimate_${estimateData.estimateNumber}.pdf`);
     
+    const { toast } = useToast();
     toast({
       title: "Success",
       description: "PDF generated successfully!",
     });
   } catch (error) {
     console.error("Error generating PDF:", error);
+    const { toast } = useToast();
     toast({
       title: "Error",
       description: "Failed to generate PDF. Please try again.",
