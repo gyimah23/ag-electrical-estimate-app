@@ -167,7 +167,7 @@ const Index = () => {
           variants={itemVariants}
         >
           <h1 className="text-4xl font-bold text-slate-800 mb-2 tracking-tight">
-            Professional Electrical Estimate
+            AG  Electrical Estimate
           </h1>
           <p className="text-slate-600 max-w-xl mx-auto">
             Create detailed estimates for electrical services with customizable materials and pricing

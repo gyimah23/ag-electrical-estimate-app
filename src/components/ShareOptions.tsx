@@ -98,7 +98,7 @@ const ShareOptions: React.FC<ShareOptionsProps> = ({
     
     body += `\nTOTAL AMOUNT: ${currencySymbol}${totalAmount.toFixed(2)}\n\n`;
     body += `A detailed PDF estimate is attached to this email.\n\n`;
-    body += `Thank you for your business!\n`;
+    body += `Thank you! your trusted electrical technician.\n`;
 
     window.location.href = `mailto:${estimateData.clientEmail}?subject=${encodeURIComponent(
       subject
