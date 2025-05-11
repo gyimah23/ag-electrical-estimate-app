@@ -72,7 +72,7 @@ const Index = () => {
       return;
     }
 
-    // Update the estimate data with the latest materials
+    // Update the estimate data with the latest materials and currency
     const currentEstimateData = {
       ...estimateData,
       items: materials,
@@ -86,7 +86,7 @@ const Index = () => {
         description: "PDF generated successfully!",
       });
     } catch (error) {
-      console.error(error);
+      console.error("PDF generation error:", error);
       toast({
         title: "Error",
         description: "Failed to generate PDF. Please try again.",

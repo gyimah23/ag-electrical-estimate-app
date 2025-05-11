@@ -56,10 +56,12 @@ export const generatePDF = (estimateData: EstimateData): void => {
     const currencySymbol = estimateData.currency || '$';
 
     estimateData.items.forEach((item: MaterialItem) => {
+      const itemBrand = item.isCable ? (item.brand || "N/A") : (item.brand || "N/A");
       const total = item.quantity * item.price;
+      
       tableRows.push([
         item.name,
-        item.brand || "N/A",
+        itemBrand,
         `${item.quantity} ${item.unit}`,
         `${currencySymbol}${item.price.toFixed(2)}`,
         `${currencySymbol}${total.toFixed(2)}`,
@@ -77,7 +79,7 @@ export const generatePDF = (estimateData: EstimateData): void => {
     });
 
     // Add total
-    const finalY = doc.lastAutoTable.finalY || 60;
+    const finalY = doc.lastAutoTable.finalY || 67;
     doc.setFontSize(11);
     doc.text("Total Amount:", 140, finalY + 10);
     doc.setFontSize(12);
@@ -102,11 +104,11 @@ export const generatePDF = (estimateData: EstimateData): void => {
       align: "center",
     });
 
-    // Save PDF
-    doc.save(`Electrical_Estimate_${estimateData.estimateNumber}.pdf`);
+    // Save PDF with a unique name to avoid browser caching issues
+    const timestamp = new Date().getTime();
+    doc.save(`Electrical_Estimate_${estimateData.estimateNumber}_${timestamp}.pdf`);
     
     console.log("PDF generated successfully");
-    // We'll handle the toast in the component that calls this function
   } catch (error) {
     console.error("Error generating PDF:", error);
     throw error; // Let the component handle the error
