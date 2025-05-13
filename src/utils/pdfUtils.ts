@@ -1,17 +1,13 @@
-
 import { EstimateData, MaterialItem } from "@/types";
 import { jsPDF } from "jspdf";
-import "jspdf-autotable";
 
-// Need to add the type definition for jspdf-autotable
+// Extend jsPDF to include lastAutoTable
 declare module "jspdf" {
   interface jsPDF {
-    autoTable: (options: any) => jsPDF;
-    lastAutoTable: {
-      finalY: number;
-    };
+    lastAutoTable?: { finalY: number };
   }
 }
+import autoTable from "jspdf-autotable"; // Explicitly importing
 
 export const generatePDF = (estimateData: EstimateData): void => {
   try {
@@ -24,7 +20,7 @@ export const generatePDF = (estimateData: EstimateData): void => {
 
     // Add company header
     doc.setFontSize(20);
-    doc.setTextColor(16, 145, 234); // electric-500 color
+    doc.setTextColor(16, 145, 234); 
     doc.text("Electrical Estimate", 105, 20, { align: "center" });
     doc.setFontSize(10);
     doc.setTextColor(100);
@@ -68,7 +64,8 @@ export const generatePDF = (estimateData: EstimateData): void => {
       ]);
     });
 
-    doc.autoTable({
+    // Use autoTable correctly
+    autoTable(doc, {
       head: [tableColumn],
       body: tableRows,
       startY: 67,
@@ -79,7 +76,7 @@ export const generatePDF = (estimateData: EstimateData): void => {
     });
 
     // Add total
-    const finalY = doc.lastAutoTable.finalY || 67;
+    const finalY = doc.lastAutoTable?.finalY || 67;
     doc.setFontSize(11);
     doc.text("Total Amount:", 140, finalY + 10);
     doc.setFontSize(12);
@@ -90,19 +87,13 @@ export const generatePDF = (estimateData: EstimateData): void => {
     doc.setFontSize(9);
     doc.setFont("helvetica", "normal");
     doc.setTextColor(100);
-    doc.text("Thank you for your business!", 105, finalY + 25, {
-      align: "center",
-    });
-    doc.text("Generated with Electrical Estimate App", 105, finalY + 30, {
-      align: "center",
-    });
+    doc.text("Thank you for your business!", 105, finalY + 25, { align: "center" });
+    doc.text("Generated with Electrical Estimate App", 105, finalY + 30, { align: "center" });
 
     // Add estimate ID at the bottom
     doc.setFont("helvetica", "italic");
     doc.setFontSize(8);
-    doc.text(`Estimate ID: ${estimateData.estimateNumber}`, 105, finalY + 40, {
-      align: "center",
-    });
+    doc.text(`Estimate ID: ${estimateData.estimateNumber}`, 105, finalY + 40, { align: "center" });
 
     // Save PDF with a unique name to avoid browser caching issues
     const timestamp = new Date().getTime();
@@ -111,6 +102,6 @@ export const generatePDF = (estimateData: EstimateData): void => {
     console.log("PDF generated successfully");
   } catch (error) {
     console.error("Error generating PDF:", error);
-    throw error; // Let the component handle the error
+    throw error;
   }
 };
