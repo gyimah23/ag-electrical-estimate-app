@@ -9,6 +9,10 @@ declare module "jspdf" {
 }
 import autoTable from "jspdf-autotable"; // Explicitly importing
 
+// Import the custom font
+// Adjusted the path to match the relative structure
+//import customFont from "../fonts/font.js";
+
 export const generatePDF = (estimateData: EstimateData): void => {
   try {
     // Initialize PDF document
@@ -18,16 +22,13 @@ export const generatePDF = (estimateData: EstimateData): void => {
       0
     );
 
+    // Add the font to jsPDF
+    //doc.addFileToVFS("Roboto-Italic.woff", customFont);
+    //doc.addFont("Roboto-Italic.woff", "Roboto", "normal");
+    //doc.setFont("Roboto"); // Set the custom font
+
     // Add company header
     doc.setFontSize(20);
-    doc.setTextColor(16, 145, 234); 
-    doc.text("Electrical Estimate", 105, 20, { align: "center" });
-    doc.setFontSize(10);
-    doc.setTextColor(100);
-    doc.text("Professional Electrical Services", 105, 27, { align: "center" });
-    doc.setDrawColor(16, 145, 234);
-    doc.line(20, 35, 190, 35);
-
     // Add estimate info
     doc.setFontSize(11);
     doc.setTextColor(0);
@@ -43,13 +44,15 @@ export const generatePDF = (estimateData: EstimateData): void => {
     // Right side information
     doc.text(`Estimate #: ${estimateData.estimateNumber}`, 150, 45);
     doc.text(`Date: ${estimateData.date}`, 150, 52);
-    doc.text(`Currency: ${estimateData.currency || '$'}`, 150, 59);
+
+    // Handle currency symbol
+    const currencySymbol = estimateData.currency?.trim() || '\u20B5'; // Unicode for ₵
+    console.log("Currency in estimateData:", estimateData.currency); // Debugging
+    doc.text(`Currency: ${currencySymbol}`, 150, 59);
 
     // Add items table
     const tableColumn = ["Material", "Brand/Standard", "Quantity", "Unit Price", "Total"];
     const tableRows: any[][] = [];
-
-    const currencySymbol = estimateData.currency || '$';
 
     estimateData.items.forEach((item: MaterialItem) => {
       const itemBrand = item.isCable ? (item.brand || "N/A") : (item.brand || "N/A");

@@ -126,7 +126,7 @@ const Index = () => {
       case "¥": return <JapaneseYen className="h-4 w-4" />;
       case "₹": return <IndianRupee className="h-4 w-4" />;
       case "₣": return <SwissFranc className="h-4 w-4" />;
-      case "₵": return <CediIcon className="h-4 w-4" />;
+      case "GHS": return <CediIcon className="h-4 w-4" />;
       default: return <DollarSign className="h-4 w-4" />;
     }
   };
@@ -218,7 +218,7 @@ const Index = () => {
                         <DropdownMenuItem onClick={() => handleCurrencyChange("₣")}>
                           <SwissFranc className="mr-2 h-4 w-4" /> CHF (₣)
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleCurrencyChange("₵")}>
+                        <DropdownMenuItem onClick={() => handleCurrencyChange("GHS")}>
                           <CediIcon className="mr-2 h-4 w-4" /> GHS (₵)
                         </DropdownMenuItem>
                       </DropdownMenuContent>

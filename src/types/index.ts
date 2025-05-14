@@ -21,5 +21,5 @@ export interface EstimateData {
 
 export type CableStandard = "Nexans" | "RR" | "Reroy" | "CABSTAR" | "TROPICAL CABLES" | "Other";
 
-export type CurrencyType = "$" | "€" | "£" | "¥" | "₹" | "₣" | "₵";
+export type CurrencyType = "$" | "€" | "£" | "¥" | "₹" | "₣" | "GHS";
 
